@@ -4,7 +4,6 @@ import vn.com.execise.shoppingservice.application.dto.ProductsDto;
 import vn.com.execise.shoppingservice.domain.repository.ProductRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ViewProductsUseCase {
 
@@ -18,6 +17,6 @@ public class ViewProductsUseCase {
         return productRepository.findAll()
                 .stream()
                 .map(ProductsDto::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

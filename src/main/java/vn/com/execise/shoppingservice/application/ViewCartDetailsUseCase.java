@@ -13,7 +13,7 @@ public class ViewCartDetailsUseCase {
     }
 
     public CartDetailsDto execute(String cartId) {
-        ShoppingCart cart = cartRepository.findById(cartId)
+        var cart = cartRepository.findById(cartId)
                 .orElse(new ShoppingCart(cartId));
 
         return new CartDetailsDto(cart);
