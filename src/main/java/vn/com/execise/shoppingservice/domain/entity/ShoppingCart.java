@@ -1,5 +1,7 @@
 package vn.com.execise.shoppingservice.domain.entity;
 
+import vn.com.execise.shoppingservice.domain.exception.cart.CartUpdateException.ItemNeededUpdateNotExistException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +34,14 @@ public class ShoppingCart {
 
     public void removeItem(String productId) {
         if (this.items.remove(productId) == null) {
-            throw new IllegalArgumentException("Không tìm thấy sản phẩm trong giỏ hàng");
+            throw new ItemNeededUpdateNotExistException(productId);
         }
     }
 
     public void updateItemQuantity(String productId, int newQuantity) {
         CartItem item = items.get(productId);
         if (item == null) {
-            throw new IllegalArgumentException("Không tìm thấy sản phẩm trong giỏ hàng");
+            throw new ItemNeededUpdateNotExistException(productId);
         }
         item.updateQuantity(newQuantity);
     }

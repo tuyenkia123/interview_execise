@@ -1,5 +1,8 @@
 package vn.com.execise.shoppingservice.domain.entity;
 
+import vn.com.execise.shoppingservice.domain.exception.cart.CartInitException.CartInputException;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartUpdateException.UpdateItemQuantityException;
+
 public class CartItem {
 
     private final Product product;
@@ -7,10 +10,10 @@ public class CartItem {
 
     public CartItem(Product product, int quantity) {
         if (product == null) {
-            throw new IllegalArgumentException("Sản phẩm không được null");
+            throw new CartInputException("Sản phẩm không được null");
         }
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Số lượng phải là số dương");
+            throw new CartInputException("Số lượng phải là số dương");
         }
 
         this.product = product;
@@ -27,7 +30,7 @@ public class CartItem {
 
     public void updateQuantity(int newQuantity) {
         if (newQuantity <= 0) {
-            throw new IllegalArgumentException("Số lượng phải là số dương");
+            throw new UpdateItemQuantityException("Số lượng phải là số dương");
         }
         this.quantity = newQuantity;
     }

@@ -1,16 +1,18 @@
 package vn.com.execise.shoppingservice.domain.entity;
 
+import vn.com.execise.shoppingservice.domain.exception.inventory.InventoryInitException.InventoryInputException;
+
 public class Inventory {
 
     private final String productId;
-    private int stockQuantity;
+    private final int stockQuantity;
 
     public Inventory(String productId, int initialStock) {
         if (productId == null || productId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Mã sản phẩm không được để trống");
+            throw new InventoryInputException("Mã sản phẩm không được để trống");
         }
         if (initialStock < 0) {
-            throw new IllegalArgumentException("Số lượng tồn kho ban đầu không được âm");
+            throw new InventoryInputException("Số lượng tồn kho ban đầu không được âm");
         }
 
         this.productId = productId;
@@ -27,16 +29,5 @@ public class Inventory {
 
     public boolean hasStock(int requiredQuantity) {
         return this.stockQuantity >= requiredQuantity;
-    }
-
-    public void reserve(int quantity) {
-        if (!hasStock(quantity)) {
-            throw new IllegalStateException("Không đủ tồn kho để đặt hàng");
-        }
-        this.stockQuantity -= quantity;
-    }
-
-    public void release(int quantity) {
-        this.stockQuantity += quantity;
     }
 }

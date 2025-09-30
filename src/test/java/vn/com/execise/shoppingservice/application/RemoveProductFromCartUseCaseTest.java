@@ -5,6 +5,8 @@ import vn.com.execise.shoppingservice.domain.entity.Inventory;
 import vn.com.execise.shoppingservice.domain.entity.Money;
 import vn.com.execise.shoppingservice.domain.entity.Product;
 import vn.com.execise.shoppingservice.domain.entity.ShoppingCart;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartNotExistException;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartUpdateException.ItemNeededUpdateNotExistException;
 import vn.com.execise.shoppingservice.domain.repository.CartRepository;
 import vn.com.execise.shoppingservice.domain.repository.InventoryRepository;
 import vn.com.execise.shoppingservice.domain.repository.ProductRepository;
@@ -53,7 +55,7 @@ class RemoveProductFromCartUseCaseTest {
         when(cartRepo.findById("c1")).thenReturn(Optional.empty());
 
         RemoveProductFromCartUseCase useCase = new RemoveProductFromCartUseCase(cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1"));
+        assertThrows(CartNotExistException.class, () -> useCase.execute("c1", "SP1"));
     }
 
     @Test
@@ -63,7 +65,7 @@ class RemoveProductFromCartUseCaseTest {
         when(cartRepo.findById("c1")).thenReturn(Optional.of(cart));
 
         RemoveProductFromCartUseCase useCase = new RemoveProductFromCartUseCase(cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1"));
+        assertThrows(ItemNeededUpdateNotExistException.class, () -> useCase.execute("c1", "SP1"));
     }
 
     @Test

@@ -1,5 +1,7 @@
 package vn.com.execise.shoppingservice.domain.entity;
 
+import vn.com.execise.shoppingservice.domain.exception.product.ProductInitException.ProductInputException;
+
 public class Product {
 
     private final String id;
@@ -8,13 +10,13 @@ public class Product {
 
     public Product(String id, String name, Money price) {
         if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("Mã sản phẩm không được để trống");
+            throw new ProductInputException("Mã sản phẩm");
         }
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Tên sản phẩm không được để trống");
+            throw new ProductInputException("Tên sản phẩm");
         }
         if (price == null) {
-            throw new IllegalArgumentException("Giá sản phẩm không được để trống");
+            throw new ProductInputException("Giá sản phẩm");
         }
 
         this.id = id;

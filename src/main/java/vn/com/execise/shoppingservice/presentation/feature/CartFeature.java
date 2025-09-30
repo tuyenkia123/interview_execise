@@ -3,6 +3,7 @@ package vn.com.execise.shoppingservice.presentation.feature;
 import vn.com.execise.shoppingservice.application.RemoveProductFromCartUseCase;
 import vn.com.execise.shoppingservice.application.UpdateCartItemQuantityUseCase;
 import vn.com.execise.shoppingservice.application.ViewCartDetailsUseCase;
+import vn.com.execise.shoppingservice.domain.exception.DomainException;
 import vn.com.execise.shoppingservice.presentation.view.CartView;
 import vn.com.execise.shoppingservice.shared.Constants;
 import vn.com.execise.shoppingservice.shared.ScannerUtils;
@@ -45,7 +46,7 @@ public class CartFeature {
                     try {
                         updateCartItemQuantityUseCase.execute(Constants.DEFAULT_CART_ID, productId, quantity);
                         cartView.displayMessage("Đã cập nhật số lượng");
-                    } catch (IllegalArgumentException e) {
+                    } catch (DomainException e) {
                         cartView.displayMessage(e.getMessage());
                     }
                 }
@@ -54,7 +55,7 @@ public class CartFeature {
                     try {
                         removeProductFromCartUseCase.execute(Constants.DEFAULT_CART_ID, productId);
                         cartView.displayMessage("Đã xóa sản phẩm khỏi giỏ hàng");
-                    } catch (IllegalArgumentException e) {
+                    } catch (DomainException e) {
                         cartView.displayMessage(e.getMessage());
                     }
                 }

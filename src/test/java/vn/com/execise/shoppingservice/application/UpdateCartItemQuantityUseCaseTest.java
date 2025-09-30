@@ -5,6 +5,9 @@ import vn.com.execise.shoppingservice.domain.entity.Inventory;
 import vn.com.execise.shoppingservice.domain.entity.Money;
 import vn.com.execise.shoppingservice.domain.entity.Product;
 import vn.com.execise.shoppingservice.domain.entity.ShoppingCart;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartNotExistException;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartUpdateException.UpdateItemQuantityException;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartUpdateException.ItemNeededUpdateNotExistException;
 import vn.com.execise.shoppingservice.domain.repository.CartRepository;
 import vn.com.execise.shoppingservice.domain.repository.InventoryRepository;
 import vn.com.execise.shoppingservice.domain.repository.ProductRepository;
@@ -54,7 +57,7 @@ class UpdateCartItemQuantityUseCaseTest {
         when(cartRepo.findById("c1")).thenReturn(Optional.empty());
 
         UpdateCartItemQuantityUseCase useCase = new UpdateCartItemQuantityUseCase(cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1", 1));
+        assertThrows(CartNotExistException.class, () -> useCase.execute("c1", "SP1", 1));
     }
 
     @Test
@@ -64,7 +67,7 @@ class UpdateCartItemQuantityUseCaseTest {
         when(cartRepo.findById("c1")).thenReturn(Optional.of(cart));
 
         UpdateCartItemQuantityUseCase useCase = new UpdateCartItemQuantityUseCase(cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1", 1));
+        assertThrows(ItemNeededUpdateNotExistException.class, () -> useCase.execute("c1", "SP1", 1));
     }
 
     @Test
@@ -85,8 +88,8 @@ class UpdateCartItemQuantityUseCaseTest {
         addToCartUseCase.execute("c1", "SP1", 7);
 
         UpdateCartItemQuantityUseCase updateCartItemQuantityUseCase = new UpdateCartItemQuantityUseCase(cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> updateCartItemQuantityUseCase.execute("c1", "SP1", 0));
-        assertThrows(IllegalArgumentException.class, () -> updateCartItemQuantityUseCase.execute("c1", "SP1", -1));
+        assertThrows(UpdateItemQuantityException.class, () -> updateCartItemQuantityUseCase.execute("c1", "SP1", 0));
+        assertThrows(UpdateItemQuantityException.class, () -> updateCartItemQuantityUseCase.execute("c1", "SP1", -1));
     }
 
     @Test

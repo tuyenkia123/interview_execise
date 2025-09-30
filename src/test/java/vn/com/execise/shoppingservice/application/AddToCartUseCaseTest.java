@@ -5,6 +5,10 @@ import vn.com.execise.shoppingservice.domain.entity.Inventory;
 import vn.com.execise.shoppingservice.domain.entity.Money;
 import vn.com.execise.shoppingservice.domain.entity.Product;
 import vn.com.execise.shoppingservice.domain.entity.ShoppingCart;
+import vn.com.execise.shoppingservice.domain.exception.cart.CartInitException.CartInputException;
+import vn.com.execise.shoppingservice.domain.exception.inventory.InventoryNotContainProductException;
+import vn.com.execise.shoppingservice.domain.exception.inventory.InventoryNotEnoughQuantityException;
+import vn.com.execise.shoppingservice.domain.exception.product.ProductNotExistException;
 import vn.com.execise.shoppingservice.domain.repository.CartRepository;
 import vn.com.execise.shoppingservice.domain.repository.InventoryRepository;
 import vn.com.execise.shoppingservice.domain.repository.ProductRepository;
@@ -51,7 +55,7 @@ class AddToCartUseCaseTest {
                 mock(InventoryRepository.class),
                 mock(CartRepository.class)
         );
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP10", 1));
+        assertThrows(ProductNotExistException.class, () -> useCase.execute("c1", "SP10", 1));
     }
 
     @Test
@@ -64,7 +68,7 @@ class AddToCartUseCaseTest {
         when(inventoryRepo.findByProductId("SP1")).thenReturn(Optional.empty());
 
         AddToCartUseCase useCase = new AddToCartUseCase(productRepo, inventoryRepo, cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1", 1));
+        assertThrows(InventoryNotContainProductException.class, () -> useCase.execute("c1", "SP1", 1));
     }
 
     @Test
@@ -80,7 +84,7 @@ class AddToCartUseCaseTest {
         when(inventoryRepo.findByProductId("SP1")).thenReturn(Optional.of(inventory));
 
         AddToCartUseCase useCase = new AddToCartUseCase(productRepo, inventoryRepo, cartRepo);
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1", 2));
+        assertThrows(InventoryNotEnoughQuantityException.class, () -> useCase.execute("c1", "SP1", 2));
     }
 
     @Test
@@ -97,8 +101,8 @@ class AddToCartUseCaseTest {
 
         AddToCartUseCase useCase = new AddToCartUseCase(productRepo, inventoryRepo, cartRepo);
 
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1", 0));
-        assertThrows(IllegalArgumentException.class, () -> useCase.execute("c1", "SP1", -1));
+        assertThrows(CartInputException.class, () -> useCase.execute("c1", "SP1", 0));
+        assertThrows(CartInputException.class, () -> useCase.execute("c1", "SP1", -1));
     }
 
     @Test

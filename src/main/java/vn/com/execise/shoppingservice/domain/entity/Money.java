@@ -1,12 +1,14 @@
 package vn.com.execise.shoppingservice.domain.entity;
 
+import vn.com.execise.shoppingservice.domain.exception.money.MoneyInitException.MoneyInputException;
+
 public class Money {
 
     private final double amount;
 
     public Money(double amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("Số tiền không được âm");
+            throw new MoneyInputException("Số tiền không được âm");
         }
         this.amount = amount;
     }

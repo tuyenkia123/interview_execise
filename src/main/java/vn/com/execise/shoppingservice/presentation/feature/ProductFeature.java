@@ -4,6 +4,7 @@ import vn.com.execise.shoppingservice.application.AddToCartUseCase;
 import vn.com.execise.shoppingservice.application.ViewProductDetailsUseCase;
 import vn.com.execise.shoppingservice.application.ViewProductsUseCase;
 import vn.com.execise.shoppingservice.application.dto.ProductDetailsDto;
+import vn.com.execise.shoppingservice.domain.exception.DomainException;
 import vn.com.execise.shoppingservice.presentation.view.MainMenuView;
 import vn.com.execise.shoppingservice.presentation.view.ProductView;
 import vn.com.execise.shoppingservice.shared.Constants;
@@ -42,7 +43,7 @@ public class ProductFeature {
         ProductDetailsDto product;
         try {
             product = viewProductDetailsUseCase.execute(productId);
-        } catch (IllegalArgumentException e) {
+        } catch (DomainException e) {
             productView.displayMessage(e.getMessage());
             return;
         }
@@ -60,7 +61,7 @@ public class ProductFeature {
                     try {
                         addToCartUseCase.execute(Constants.DEFAULT_CART_ID, productId, quantity);
                         productView.displayMessage("Đã thêm vào giỏ hàng");
-                    } catch (IllegalArgumentException e) {
+                    } catch (DomainException e) {
                         productView.displayMessage(e.getMessage());
                     }
                 }
